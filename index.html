@@ -5,45 +5,45 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Shop Homepage</title>
-        <!-- Favicon-->
+        <title>Webbshop - Startsida</title>
+
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" >
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
+       
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" >
+       
         <link href="css/bootstrap.css" rel="stylesheet" >
     </head>
     <body>
 
         
-       
-        <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Webbshop</a>
+                <a class="navbar-brand" href="index.html">Webbshop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Hem</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Hem</a></li>
                         <li class="nav-item"><a class="nav-link" href="#kommer-snart!">Om oss</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#kommer-snart!">Kontakt</a></li>
                         <li class="nav-item dropdown">
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
+    
+        <header class="bg-dark py-3">
+            <div class="container px-4 px-lg-5 my-1">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">Handla med stil!</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">i våran webbapplikation</p>
+                    <p class="lead fw-normal text-white-50 mb-0">i våran webbshop</p>
                 </div>
             </div>
         </header>
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="productDisplay"> 
+
+        <section class="py-1">
+            <div class="container px-4 px-lg-5 mt-3">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center" id="productDisplay"> 
                   
                 </div>
             </div>
@@ -51,13 +51,25 @@
     
         <script>
 
-const exchangeRateUSDToSEK = 10.24; //2024-03-07 växlingskurs 
+//Metod för att hämta nuvarande växelkurs från USD och uppdatera exchangeRateUSDToSEK.
+async function fetchExchangeRate() {
+            const response = await fetch('https://open.er-api.com/v6/latest/USD');
+            const data = await response.json();
+            return data.rates.SEK;
+        }
 
+        async function updateExchangeRate() {
+            try {
+                const exchangeRate = await fetchExchangeRate();
+                const exchangeRateUSDToSEK = exchangeRate;
+                console.log('Updated exchange rate:', exchangeRateUSDToSEK);
+
+            //Hämtar produkterna         
             fetch("https://fakestoreapi.com/products")
                 .then(res => res.json())
                 .then(data => {
                     const productDisplay = document.getElementById("productDisplay");
-    
+                    //"bestallning.html?productId=${item.id}" gör så att vi får med id av produkten till beställningssidan
                     data.forEach(item => {
                         const priceInSEK = (item.price * exchangeRateUSDToSEK).toFixed(2);
                         const formattedPrice = parseFloat(priceInSEK).toLocaleString('en-US', {maximumFractionDigits: 2});
@@ -75,16 +87,24 @@ const exchangeRateUSDToSEK = 10.24; //2024-03-07 växlingskurs
                                     ${formattedPrice} SEK</div>
                                     </div>
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="bestallning.html">Beställ</a></div>
+                                        <div class="text-center"><a class="btn btn-dark mt-auto" href="bestallning.html?productId=${item.id}">Beställ</a></div>
                                     </div>
                                 </div>
                             </div>
                         </div>`;
                         productDisplay.insertAdjacentHTML("beforeend", markup);
-                    });
-                })
-                .catch(error => console.error('Error fetching products:', error));
-    
+                        });
+                    })
+                    .catch(error => console.error('Error fetching products:', error));
+            } catch (error) {
+                console.error('Error fetching exchange rate:', error);
+            }
+        }
+
+        //Kallar på funktionen för att uppdatera nuvarande växelkurs
+        updateExchangeRate();
+
+              //Funktion som tar in "item.rating.rate" och rundar den till närmsta heltal, returnerar en sträng med kod för fyllda/tomma stjärnor
             function generateStars(rating) {
                 const starCount = Math.round(rating);
                 let stars = '';
