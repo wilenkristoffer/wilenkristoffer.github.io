@@ -4,20 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beställning</title>
-     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" >
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" >
-     <link href="css/bootstrap.css" rel="stylesheet" >
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
 
-     <!-- productImage bestämmer storlek för bilden-->
-     <style>
-        #productImage {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            max-height: 400px;
-        }
-
+    <style>
         form {
             margin: 0 auto;
             max-width: 800px;
@@ -56,66 +47,62 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h1 id="productTitle" class="text-center"></h1>
-                <img id="productImage" class="mx-auto d-block" src="" alt="Product Image">
-                <p id="productDescription" class="text-center"></p>
-            </div>
+
+<h1 class="text-center">Beställningsformulär</h1>
+<form id="orderForm" method="POST">
+    <label for="name">Namn</label>
+    <input type="text" id="name" class="form-control" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" class="form-control" required>
+
+    <label for="tel">Telefonnummer</label>
+    <input type="tel" id="tel" class="form-control" required>
+
+    <label for="gatunamn">Address</label>
+    <input type="text" id="gatunamn" class="form-control" required>
+
+    <div class="row">
+        <div class="col">
+            <label for="ort">Ort</label>
+            <input type="text" id="ort" class="form-control" required>
+        </div>
+        <div class="col">
+            <label for="postnr">Postnummer</label>
+            <input type="text" id="postnr" class="form-control" required>
         </div>
     </div>
-<hr>
-    <h1 class="text-center">Beställningsformulär</h1>
 
-    <form action="">
-        <label for="name">Namn</label>
-        <input type="text" id="name" class="form-control" required>
+    <input type="submit" class="btn" value="Skicka">
+</form>
 
-        <label for="email">Email</label> 
-        <input type="email" id="email" class="form-control" required>
-        
-        <label for="tel">Telefonnummer</label>
-        <input type="tel" id="tel" class="form-control" required>
+<script>
+    document.getElementById('orderForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-        <label for="gatunamn">Address</label>
-        <input type="text" id="gatunamn" class="form-control" required>
-        
-        <div class="row">
-            <div class="col">
-                <label for="ort">Ort</label>
-                <input type="text" id="ort" class="form-control" required>
-            </div>
-            <div class="col">
-                <label for="postnr">Postnummer</label>
-                <input type="text" id="postnr" class="form-control" required>
-            </div>
-        </div>
+        // Retrieve form data
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            tel: document.getElementById('tel').value,
+            address: document.getElementById('gatunamn').value,
+            ort: document.getElementById('ort').value,
+            postnr: document.getElementById('postnr').value
+        };
 
+        console.log('Form Data:', formData);
 
+        // Serialize form data into URL parameters
+        const params = new URLSearchParams(formData);
 
-        <input type="submit" class="btn" value="Skicka">
-    </form>
-
-    <script>
-        //Hämtar id av produkten från URL:n, i.e "?productId=1"
         const urlParams = new URLSearchParams(window.location.search);
-        let productId = urlParams.get('productId');
+        const productId = urlParams.get('productId');
+        const confirmationUrl = `confirmation.html?productId=${productId}&${params.toString()}`;
 
-        //Default id när vi enbart jobbar med bestallningsdokumentet
-        if (!productId) {
-            productId = '1';
-        }
+        // Redirect the user to the confirmation page with form data
+        window.location.href = confirmationUrl;
+    });
+</script>
 
-        //Hämtar data för titel, bild och beskrivning
-        fetch(`https://fakestoreapi.com/products/${productId}`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('productTitle').innerText = data.title;
-                document.getElementById('productImage').src = data.image;
-                document.getElementById('productDescription').innerText = data.description;
-            })
-            .catch(error => console.error('Error fetching product details:', error));
-    </script>
 </body>
 </html>

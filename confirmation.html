@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bekräftelse</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" >
+    <link href="css/bootstrap.css" rel="stylesheet" >
+
+    <!-- productImage bestämmer storlek för bilden-->
+    <style>
+        #productImage {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body>
+m
+    <h1 class="text-center">Orderbekräftelse</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 id="productTitle" class="text-center"></h2>
+                <img id="productImage" class="mx-auto d-block" src="" alt="Product Image">
+                <p id="productDescription" class="text-center"></p>
+            </div>
+            <div class="col-md-6">
+                <!-- Kundinfo -->
+                <h3 class="text-center mt-5">Kundinformation</h3>
+                <ul class="list-unstyled text-center">
+                    <li>Namn: <span id="customerName"></span></li>
+                    <li>Email: <span id="customerEmail"></span></li>
+                    <li>Telefonnummer: <span id="customerTel"></span></li>
+                    <li>Address: <span id="customerAddress"></span></li>
+                    <li>Ort: <span id="customerOrt"></span></li>
+                    <li>Postnummer: <span id="customerPostnr"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('productId');
+
+
+
+        //Hämtar data för titel, bild och beskrivning
+        fetch(`https://fakestoreapi.com/products/${productId}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('productTitle').innerText = data.title;
+                document.getElementById('productImage').src = data.image;
+                document.getElementById('productDescription').innerText = data.description;
+            })
+            .catch(error => console.error('Error fetching product details:', error));
+    
+        //Hämtar data från formuläret/url:n
+        const formData = {
+            name: urlParams.get('name'),
+            email: urlParams.get('email'),
+            tel: urlParams.get('tel'),
+            address: urlParams.get('address'),
+            ort: urlParams.get('ort'),
+            postnr: urlParams.get('postnr')
+        };
+    
+       //Tilldelar datat till listan med kundinfo
+        document.getElementById('customerName').innerText = formData.name;
+        document.getElementById('customerEmail').innerText = formData.email;
+        document.getElementById('customerTel').innerText = formData.tel;
+        document.getElementById('customerAddress').innerText = formData.address;
+        document.getElementById('customerOrt').innerText = formData.ort;
+        document.getElementById('customerPostnr').innerText = formData.postnr;
+    </script>
+    
+    
+</body>
+</html>
