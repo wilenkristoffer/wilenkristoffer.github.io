@@ -17,10 +17,34 @@
             margin: 0 auto;
             max-height: 400px;
         }
+    
+        .label {
+    width: 120px; 
+    display: inline-block;
+    text-align: right;
+    margin-right: 10px;
+}
     </style>
+
+<script src="js/confirmation.js" defer></script>
 </head>
 <body>
-m
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="index.html">Webbshop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Hem</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kommer-snart!">Om oss</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kommer-snart!">Kontakt</a></li>
+                    <li class="nav-item dropdown">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <h1 class="text-center">Orderbekräftelse</h1>
     <div class="container">
         <div class="row justify-content-center">
@@ -30,55 +54,18 @@ m
                 <p id="productDescription" class="text-center"></p>
             </div>
             <div class="col-md-6">
-                <!-- Kundinfo -->
+                <!-- Kundinfo-lista-->
                 <h3 class="text-center mt-5">Kundinformation</h3>
-                <ul class="list-unstyled text-center">
-                    <li>Namn: <span id="customerName"></span></li>
-                    <li>Email: <span id="customerEmail"></span></li>
-                    <li>Telefonnummer: <span id="customerTel"></span></li>
-                    <li>Address: <span id="customerAddress"></span></li>
-                    <li>Ort: <span id="customerOrt"></span></li>
-                    <li>Postnummer: <span id="customerPostnr"></span></li>
-                </ul>
-            </div>
+                <ul class="list-unstyled">
+                    <li><span class="label">Namn:</span> <span id="customerName"></span></li>
+                    <li><span class="label">Email:</span> <span id="customerEmail"></span></li>
+                    <li><span class="label">Telefonnummer:</span> <span id="customerTel"></span></li>
+                    <li><span class="label">Address:</span> <span id="customerAddress"></span></li>
+                    <li><span class="label">Ort:</span> <span id="customerOrt"></span></li>
+                    <li><span class="label">Postnummer:</span> <span id="customerPostnr"></span></li>
+                </ul>                
+            </div>            
         </div>
     </div>
-
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('productId');
-
-
-
-        //Hämtar data för titel, bild och beskrivning
-        fetch(`https://fakestoreapi.com/products/${productId}`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('productTitle').innerText = data.title;
-                document.getElementById('productImage').src = data.image;
-                document.getElementById('productDescription').innerText = data.description;
-            })
-            .catch(error => console.error('Error fetching product details:', error));
-    
-        //Hämtar data från formuläret/url:n
-        const formData = {
-            name: urlParams.get('name'),
-            email: urlParams.get('email'),
-            tel: urlParams.get('tel'),
-            address: urlParams.get('address'),
-            ort: urlParams.get('ort'),
-            postnr: urlParams.get('postnr')
-        };
-    
-       //Tilldelar datat till listan med kundinfo
-        document.getElementById('customerName').innerText = formData.name;
-        document.getElementById('customerEmail').innerText = formData.email;
-        document.getElementById('customerTel').innerText = formData.tel;
-        document.getElementById('customerAddress').innerText = formData.address;
-        document.getElementById('customerOrt').innerText = formData.ort;
-        document.getElementById('customerPostnr').innerText = formData.postnr;
-    </script>
-    
-    
 </body>
 </html>

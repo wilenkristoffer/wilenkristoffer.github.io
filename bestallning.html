@@ -48,6 +48,23 @@
 </head>
 <body>
 
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="index.html">Webbshop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Hem</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kommer-snart!">Om oss</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kommer-snart!">Kontakt</a></li>
+                    <li class="nav-item dropdown">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
 <h1 class="text-center">Beställningsformulär</h1>
 <form id="orderForm" method="POST">
     <label for="name">Namn</label>
@@ -76,33 +93,7 @@
     <input type="submit" class="btn" value="Skicka">
 </form>
 
-<script>
-    document.getElementById('orderForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent default form submission
-
-        // Retrieve form data
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            tel: document.getElementById('tel').value,
-            address: document.getElementById('gatunamn').value,
-            ort: document.getElementById('ort').value,
-            postnr: document.getElementById('postnr').value
-        };
-
-        console.log('Form Data:', formData);
-
-        // Serialize form data into URL parameters
-        const params = new URLSearchParams(formData);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('productId');
-        const confirmationUrl = `confirmation.html?productId=${productId}&${params.toString()}`;
-
-        // Redirect the user to the confirmation page with form data
-        window.location.href = confirmationUrl;
-    });
-</script>
+<script src="js/bestallning.js" defer></script>
 
 </body>
 </html>
