@@ -23,3 +23,20 @@ document.getElementById('orderForm').addEventListener('submit', function (event)
 
     window.location.href = confirmationUrl;
 });
+
+//Funktion för att hämta senaste datat som användaren skrivit i formuläret
+window.onload = function() {
+    document.getElementById('name').value = localStorage.getItem('name') || '';
+    document.getElementById('email').value = localStorage.getItem('email') || '';
+    document.getElementById('tel').value = localStorage.getItem('tel') || '';
+    document.getElementById('gatunamn').value = localStorage.getItem('gatunamn') || '';
+    document.getElementById('ort').value = localStorage.getItem('ort') || '';
+    document.getElementById('postnr').value = localStorage.getItem('postnr') || '';
+};
+
+// Sparar i localStorage när man ändrar i formuläret
+document.querySelectorAll('input').forEach(function(input) {
+    input.addEventListener('input', function() {
+        localStorage.setItem(input.id, input.value);
+    });
+});
