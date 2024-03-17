@@ -39,6 +39,7 @@ async function updateExchangeRate() {
                         </div>
                     </div>
                 </div>`;
+                //insertAdjacentHTML() parsar om markup texten till html och lägger in i DOM trädet vid "beforeend"
                 productDisplay.insertAdjacentHTML("beforeend", markup);
                 });
             })

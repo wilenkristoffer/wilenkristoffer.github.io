@@ -17,13 +17,15 @@
             margin: 0 auto;
             max-height: 400px;
         }
-    
-        .label {
-    width: 120px; 
-    display: inline-block;
-    text-align: right;
-    margin-right: 10px;
-}
+
+        .list-group-item {
+            padding: 5px 15px;
+        }
+        .list-group-item hr {
+            margin-top: 5px; 
+            margin-bottom: 5px;
+        }
+
     </style>
 
 <script src="js/confirmation.js" defer></script>
@@ -49,21 +51,47 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2 id="productTitle" class="text-center"></h2>
-                <img id="productImage" class="mx-auto d-block" src="" alt="Product Image">
-                <p id="productDescription" class="text-center"></p>
+                <h2 id="productTitle" class="text-center">Product Title</h2>
+                <img id="productImage" class="mx-auto d-block" src="https://via.placeholder.com/150" alt="Product Image">
+                <p id="productDescription" class="text-center">Product Description</p>
             </div>
-            <div class="col-md-6">
-                <!-- Kundinfo-lista-->
-                <h3 class="text-center mt-5">Kundinformation</h3>
-                <ul class="list-unstyled">
-                    <li><span class="label">Namn:</span> <span id="customerName"></span></li>
-                    <li><span class="label">Email:</span> <span id="customerEmail"></span></li>
-                    <li><span class="label">Telefonnummer:</span> <span id="customerTel"></span></li>
-                    <li><span class="label">Address:</span> <span id="customerAddress"></span></li>
-                    <li><span class="label">Ort:</span> <span id="customerOrt"></span></li>
-                    <li><span class="label">Postnummer:</span> <span id="customerPostnr"></span></li>
-                </ul>                
+
+
+            <div class="col-md-5">
+                <div class="container">
+                    <h3 class="text-center mt-6">Kundinformation</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="font-weight-bold">Namn:</span><br>
+                            <span id="customerName"></span>
+                            <hr>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold">Email:</span><br>
+                            <span id="customerEmail"></span>
+                            <hr>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold">Telefonnummer:</span><br>
+                            <span id="customerTel"></span>
+                            <hr>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold">Address:</span><br>
+                            <span id="customerAddress"></span>
+                            <hr>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold">Ort:</span><br>
+                            <span id="customerOrt"></span>
+                            <hr>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold">Postnummer:</span><br>
+                            <span id="customerPostnr"></span>
+                        </li>
+                    </ul>
+                </div>  
             </div>            
         </div>
     </div>
