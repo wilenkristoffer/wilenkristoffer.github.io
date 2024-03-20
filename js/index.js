@@ -72,7 +72,7 @@ async function updateExchangeRate() {
   }
   
 
-  function addToCart(item) {
+  function addToCart(item, button) {
 
     //Hämtar produkter som redan finns i varukorgen eller sätter en tom array ([])
     let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -95,6 +95,13 @@ async function updateExchangeRate() {
 
     // Sparar till localStorage
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    //Ändrar text när man klickar på knappen
+    button.textContent = 'Tillagd i varukorgen';
+
+    //Ändrar text efter 3 sekunder
+    setTimeout(function() {
+        button.textContent = 'Lägg till ännu en';
+    }, 3000);
 }
 
 
@@ -129,8 +136,8 @@ const priceText = document.getElementById(`price-${id}`).textContent.trim();
             image: image,
             price: price
         };
-        //Skickar in produkten i addToCart
-        addToCart(item);
+        //Skickar in produkten i addToCart och event.target(knappen)
+        addToCart(item, event.target);
 
     }
 });
