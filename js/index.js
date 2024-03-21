@@ -42,7 +42,7 @@ async function fetchAndDisplayProducts() {
 
         products.forEach(item => {
             const priceInSEK = (item.price * exchangeRate).toFixed(2);
-            const formattedPrice = parseFloat(priceInSEK).toLocaleString('en-US', { maximumFractionDigits: 2 });
+            const formattedPrice = parseFloat(priceInSEK).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const markup = `
               <div class="col mb-5">
                   <div class="card h-100" data-item-id="${item.id}">
