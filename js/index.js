@@ -1,26 +1,49 @@
-//AJAX används för att hämta nuvarande växelkurs från USD och uppdatera exchangeRateUSDToSEK.
-async function fetchExchangeRate() {
-  const response = await fetch('https://open.er-api.com/v6/latest/USD');
-  const data = await response.json();
-  return data.rates.SEK;
+//Används för att hämta nuvarande växelkurs från USD och uppdatera exchangeRateUSDToSEK med hälp av AJAX.
+function fetchExchangeRate() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'https://open.er-api.com/v6/latest/USD',
+            type: 'GET',
+            success: function(data) {
+                resolve(data.rates.SEK);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
 }
 
-async function updateExchangeRate() {
-  try {
-      const exchangeRate = await fetchExchangeRate();
-      const exchangeRateUSDToSEK = exchangeRate;
-      console.log('Updated exchange rate:', exchangeRateUSDToSEK);
+//Använder AJAX för att hämta produkterna, returnerar ett promise objekt, som ovan
 
-  //Hämtar produkterna         
-  fetch("https://fakestoreapi.com/products")
-      .then(res => res.json())
-      .then(data => {
-          const productDisplay = document.getElementById("productDisplay");
-          //"bestallning.html?productId=${item.id}" gör så att vi får med id av produkten till beställningssidan
-          data.forEach(item => {
-              const priceInSEK = (item.price * exchangeRateUSDToSEK).toFixed(2);
-              const formattedPrice = parseFloat(priceInSEK).toLocaleString('en-US', {maximumFractionDigits: 2});
-              const markup = `
+function fetchProducts() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'https://fakestoreapi.com/products',
+            type: 'GET',
+            success: function(data) {
+                resolve(data);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
+}
+
+async function fetchAndDisplayProducts() {
+    try {
+        //Vi kallar på funktionerna med await så de blir klara innan vi fortsätter i metoden
+        const exchangeRate = await fetchExchangeRate();
+        console.log('Updated exchange rate:', exchangeRate);
+
+        const products = await fetchProducts();
+        const productDisplay = document.getElementById("productDisplay");
+
+        products.forEach(item => {
+            const priceInSEK = (item.price * exchangeRate).toFixed(2);
+            const formattedPrice = parseFloat(priceInSEK).toLocaleString('en-US', { maximumFractionDigits: 2 });
+            const markup = `
               <div class="col mb-5">
                   <div class="card h-100" data-item-id="${item.id}">
                       <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">${item.category}</div>
@@ -39,14 +62,11 @@ async function updateExchangeRate() {
                       </div>
                   </div>
               </div>`;
-              //insertAdjacentHTML() parsar om markup texten till html och lägger in i DOM trädet vid "beforeend"
-              productDisplay.insertAdjacentHTML("beforeend", markup);
-              });
-          })
-          .catch(error => console.error('Error fetching products:', error));
-  } catch (error) {
-      console.error('Error fetching exchange rate:', error);
-  }
+            productDisplay.insertAdjacentHTML("beforeend", markup);
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
 
     //Funktion som tar in "item.rating.rate" och rundar den till närmsta heltal, returnerar en sträng med kod för fyllda/tomma stjärnor
@@ -65,7 +85,7 @@ async function updateExchangeRate() {
 
   async function onPageLoad() {
       try {
-          await updateExchangeRate();
+          await fetchAndDisplayProducts();
       } catch (error) {
           console.error('Error on page load:', error);
       }
@@ -93,7 +113,8 @@ async function updateExchangeRate() {
         cartCount.textContent = parseInt(cartCount.textContent) + 1;
     }
 
-    // Sparar till localStorage
+    //Sparar till localStorage, cartItems är nyckeln, värdet är information om produkten
+    // Med JSON.stringify sparas arrayen i rätt format
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     //Ändrar text när man klickar på knappen
     button.textContent = 'Tillagd i varukorgen';
@@ -103,7 +124,6 @@ async function updateExchangeRate() {
         button.textContent = 'Lägg till ännu en';
     }, 3000);
 }
-
 
 function updateCartCount() {
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
