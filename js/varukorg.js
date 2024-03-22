@@ -47,7 +47,7 @@ function displayCartItems() {
 
 */
 
-//Laddas när vi öppnar sidan efter att DOM har laddats klar, används istället för onPageLoad
+//Laddas när vi öppnar sidan efter att DOM har laddats klar, används istället för onLoad
 $(document).ready(function() {
     function displayCartItems() {
         //Vi hämtar produkter från localStorage med getItem
@@ -76,7 +76,7 @@ $(document).ready(function() {
             totalAmount += parseFloat(totalPrice);
             const itemElement = `
                 <div>
-                    <img src="${item.image}" alt="${item.title}" style="width: 100px; height: 100px;">
+                    <img src="${item.image}" alt="${item.title}" style="width: 250px; height: 250px;">
                     <div>${item.title}</div>
                     <div>Pris/st: ${item.price} SEK</div>
                     <div>Totalt: ${totalPrice} SEK</div>

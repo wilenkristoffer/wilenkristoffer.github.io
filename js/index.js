@@ -14,8 +14,7 @@ function fetchExchangeRate() {
     });
 }
 
-//Använder AJAX för att hämta produkterna, returnerar ett promise objekt, som ovan
-
+//Använder AJAX/jQuery för att hämta produkterna, returnerar ett promise objekt, som ovan
 function fetchProducts() {
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -42,6 +41,7 @@ async function fetchAndDisplayProducts() {
 
         products.forEach(item => {
             const priceInSEK = (item.price * exchangeRate).toFixed(2);
+            //Ser till att priset har 2 decimaler
             const formattedPrice = parseFloat(priceInSEK).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const markup = `
               <div class="col mb-5">
@@ -131,20 +131,21 @@ function updateCartCount() {
     cartCount.textContent = cartItems.length;
 }
 
+//Lyssnar ifall vi klickar på addToCart knappen
 document.addEventListener('click', function(event) {
     if (event.target && event.target.id === 'addToCartBtn') {
         const product = event.target.closest('.card');
 
         
         const id = product.dataset.itemId;
-        //Sätter variabler med titel, bild och pris och deras id
+        //Variabler med titel, bild och pris med deras id
 const title = document.getElementById(`title-${id}`).textContent;
 const image = document.getElementById(`img-${id}`).src;
 const priceText = document.getElementById(`price-${id}`).textContent.trim();
 //const image = product.querySelector('.card-img-top').src;
 //const priceText = product.querySelector('.text-center').textContent.trim(); 
 
-        //Formaterar om texten så vi kan räkna i varukorgen
+        //Formaterar om priset så att vi kan räkna i varukorgen
         const priceWithComma = priceText.match(/[\d,]+\.\d{2}/g);
         const price = parseFloat(priceWithComma[0].replace(',', '')); 
 
@@ -156,7 +157,7 @@ const priceText = document.getElementById(`price-${id}`).textContent.trim();
             image: image,
             price: price
         };
-        //Skickar in produkten i addToCart och event.target(knappen)
+        //Skickar in produkten och event.target(knappen) i addToCart 
         addToCart(item, event.target);
 
     }
