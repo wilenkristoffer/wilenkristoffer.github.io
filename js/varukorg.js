@@ -70,7 +70,7 @@ $(document).ready(function() {
             emptyCartMessageContainer.text('');
             cartItemsContainer.show();
         }
-        //För varje produkt så skapar vi ett div element, och sätter text på elementet via innerHtml och sedan en markup text. 
+        //För varje produkt så skapar vi ett div element, och sätter text på elementet med en HTML-kod. 
         cartItems.forEach(item => {
             const totalPrice = (item.price * item.quantity).toFixed(2);
             totalAmount += parseFloat(totalPrice);
